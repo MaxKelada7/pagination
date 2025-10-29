@@ -30,7 +30,7 @@ if (page < 1) page = 1;
 if (page > TOTAL) page = TOTAL;
 
 function link(p, label, cls=""){
-  const AUTH = "?authuser=0"; // falls du authuser nicht brauchst → einfach "" setzen
+  const AUTH = "?authuser=0";
   const href = BASE + p + AUTH;
   return `<a href="${href}" class="${cls}" target="_top" rel="noopener noreferrer">${label}</a>`;
 }
