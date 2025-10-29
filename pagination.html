@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pagination</title>
+<base target="_top">
 <style>
   body{margin:0;font-family:Arial,Helvetica,sans-serif}
   .wrap{display:flex;justify-content:center;gap:.5rem;align-items:center;padding:.5rem}
@@ -30,9 +31,11 @@ if (page < 1) page = 1;
 if (page > TOTAL) page = TOTAL;
 
 function link(p, label, cls=""){
-  const AUTH = "?authuser=0";
+  const AUTH = "?authuser=0"; // falls nicht nötig: "" setzen oder 0→1 ändern
   const href = BASE + p + AUTH;
-  return `<a href="${href}" class="${cls}" target="_top" rel="noopener noreferrer">${label}</a>`;
+  // onclick-Fallback erzwingt Top-Navigation selbst dann, wenn target von Sites überschrieben würde
+  return `<a href="${href}" class="${cls}" rel="noopener noreferrer"
+            onclick="window.top.location.href='${href}'; return false;">${label}</a>`;
 }
 
 function build(){
