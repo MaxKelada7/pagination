@@ -31,7 +31,7 @@ if (page < 1) page = 1;
 if (page > TOTAL) page = TOTAL;
 
 function link(p, label, cls=""){
-  const AUTH = "?authuser=1"; // falls nicht nötig: "" setzen oder 0→1 ändern
+  const AUTH = "?authuser=0"; // falls nicht nötig: "" setzen oder 0→1 ändern
   const href = BASE + p + AUTH;
   // onclick-Fallback erzwingt Top-Navigation selbst dann, wenn target von Sites überschrieben würde
   return `<a href="${href}" class="${cls}" rel="noopener noreferrer"
