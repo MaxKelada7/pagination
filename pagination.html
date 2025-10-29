@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pagination</title>
+<style>
+  body{margin:0;font-family:Arial,Helvetica,sans-serif}
+  .wrap{display:flex;justify-content:center;gap:.5rem;align-items:center;padding:.5rem}
+  a,span{font-size:14px;text-decoration:none}
+  a{outline:none}
+  .current{font-weight:700}
+  .muted{opacity:.5;pointer-events:none}
+  .ellipsis{padding:0 .25rem}
+</style>
+</head>
+<body>
+<div id="nav" class="wrap">Lädt…</div>
+
+<script>
+/* === Einstellungen (anpassen, wenn nötig) === */
+const TOTAL = parseInt(new URLSearchParams(location.search).get("total")) || 50;
+// Basis-URL deiner Google-Sites-Fälle (mit Slash am Ende!)
+const BASE = "https://sites.google.com/view/promedus-lernportal/4-studienjahr/p%C3%A4diatrie/die-50-wichtigsten-f%C3%A4lle-p%C3%A4diatrie/";
+
+/* === Laufzeit === */
+const qs = new URLSearchParams(location.search);
+let page = parseInt(qs.get("p")) || 1;
+if (page < 1) page = 1;
+if (page > TOTAL) page = TOTAL;
+
+function link(p, label, cls=""){
+  const href = BASE + p; // Ergebnis: …/1 …/2 …/50
+  return `<a href="${href}" class="${cls}">${label}</a>`;
+}
+
+function build(){
+  const parts = [];
+  // Zurück
+  parts.push(page>1 ? link(page-1,"Zurück") : `<span class="muted">Zurück</span>`);
+
+  // Zahlen (kompakt mit Ellipsen)
+  const range = [];
+  const push = n => range.push(n);
+  const show = new Set([1,2,3, page-2,page-1,page,page+1,page+2, TOTAL-2, TOTAL-1, TOTAL]);
+  for (let i=1;i<=TOTAL;i++){
+    if (show.has(i) && i>=1 && i<=TOTAL) push(i);
+  }
+  let last = 0;
+  for (const n of range){
+    if (n - last > 1) parts.push(`<span class="ellipsis">…</span>`);
+    if (n === page) parts.push(`<span class="current">${n}</span>`);
+    else parts.push(link(n, n));
+    last = n;
+  }
+
+  // Weiter
+  parts.push(page<TOTAL ? link(page+1,"Weiter") : `<span class="muted">Weiter</span>`);
+
+  document.getElementById("nav").innerHTML = parts.join(" ");
+}
+build();
+</script>
+</body>
+</html>
